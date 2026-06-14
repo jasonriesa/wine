@@ -239,6 +239,13 @@ textarea::placeholder {
   min-height: 1.2em;
 }
 
+.firebase-status {
+  font-size: 0.85rem;
+  margin-top: var(--space-sm);
+  min-height: 1.2em;
+  font-weight: 500;
+}
+
 /* --- Buttons --- */
 .btn {
   font-family: var(--font-body);
@@ -433,6 +440,13 @@ tbody tr {
 
 tbody tr:hover {
   background: var(--bg-hover);
+}
+
+.brought-by {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 0.85em;
 }
 
 /* Rank bar inside table */

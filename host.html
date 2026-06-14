@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wine Registration — Host</title>
+  <meta name="description" content="Register bottles for the blind wine tasting event.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="host.css">
+</head>
+<body>
+
+  <header class="page-header">
+    <div class="container">
+      <div class="header-row">
+        <div>
+          <h1 class="page-title">🍷 Wine Registration</h1>
+          <p class="page-sub">Register each bottle as guests arrive</p>
+        </div>
+        <a href="index.html" class="nav-link">→ Results Page</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Registration Form -->
+    <section class="form-card">
+      <h2 class="form-title">Register a Bottle</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="input-id">Bottle ID</label>
+          <div class="id-selector">
+            <button id="btn-id-minus" class="btn-circle" aria-label="Decrease">−</button>
+            <input type="number" id="input-id" min="1" max="99" value="1">
+            <button id="btn-id-plus" class="btn-circle" aria-label="Increase">+</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="input-winery">Winery</label>
+          <input type="text" id="input-winery" placeholder="e.g. Honig" maxlength="60" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="input-year">Year</label>
+          <input type="text" id="input-year" placeholder="e.g. 2023" maxlength="10" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="input-region">Region</label>
+          <input type="text" id="input-region" placeholder="e.g. Napa Valley" maxlength="60" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="input-brought-by">Brought by</label>
+          <input type="text" id="input-brought-by" placeholder="e.g. Alice" maxlength="40" autocomplete="off">
+        </div>
+      </div>
+      <p id="form-error" class="form-error"></p>
+      <button id="btn-register" class="btn btn-primary">Register Bottle</button>
+    </section>
+
+    <!-- Registered Bottles Table -->
+    <section class="registry-section">
+      <div class="registry-header">
+        <h2 class="registry-title">Registered Bottles</h2>
+        <span id="registry-count" class="registry-count">0 bottles</span>
+      </div>
+      <div id="registry-list" class="registry-list"></div>
+      <div id="registry-empty" class="registry-empty">
+        <span class="empty-icon">📝</span>
+        <p>No bottles registered yet.</p>
+        <p class="empty-sub">Use the form above to register each guest's bottle.</p>
+      </div>
+    </section>
+
+    <!-- Reset / Danger Zone -->
+    <section class="reset-section">
+      <h2 class="reset-title">⚠️ Reset</h2>
+      <p class="reset-desc">Clear all data from Firebase and start fresh. Use this after testing, before the real event.</p>
+      <div class="reset-actions">
+        <button id="btn-reset-rankings" class="btn btn-danger-outline">Clear All Rankings</button>
+        <button id="btn-reset-all" class="btn btn-danger">Reset Everything</button>
+      </div>
+      <p id="reset-status" class="reset-status"></p>
+    </section>
+
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="firebase-sync.js"></script>
+  <script src="host.js"></script>
+</body>
+</html>

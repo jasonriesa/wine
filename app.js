@@ -7,6 +7,42 @@
 (function () {
   'use strict';
 
+  // --- Wine Registry (shared with host.html via localStorage) ---
+  let wineRegistry = {};
+
+  function loadWineRegistry() {
+    try {
+      const data = localStorage.getItem('wine-registry');
+      if (data) wineRegistry = JSON.parse(data) || {};
+    } catch (e) {
+      wineRegistry = {};
+    }
+  }
+
+  /** Returns display name for a bottle, e.g. "Honig, 2023" or "Bottle 7" */
+  function bottleName(id) {
+    const wine = wineRegistry[id];
+    if (wine) {
+      let name = wine.winery;
+      if (wine.year && wine.year !== '—') name += ', ' + wine.year;
+      return name;
+    }
+    return 'Bottle ' + id;
+  }
+
+  /** Returns full detail line, e.g. "Honig, 2023 · Napa Valley · Brought by Alice" */
+  function bottleDetail(id) {
+    const wine = wineRegistry[id];
+    if (wine) {
+      let parts = [wine.winery];
+      if (wine.year && wine.year !== '—') parts.push(wine.year);
+      if (wine.region && wine.region !== '—') parts.push(wine.region);
+      if (wine.broughtBy && wine.broughtBy !== '—') parts.push('Brought by ' + wine.broughtBy);
+      return parts.join(' · ');
+    }
+    return '';
+  }
+
   // --- DOM References ---
   const inputTextarea = document.getElementById('rankings-input');
   const btnLoadSample = document.getElementById('btn-load-sample');
@@ -301,6 +337,7 @@
   }
 
   function renderResults(rankings) {
+    loadWineRegistry();
     const overallRankings = computeOverallRankings(rankings);
     const agreements = computeAgreements(rankings);
 
@@ -352,9 +389,15 @@
       const bottleInfo = createElement(
         'div',
         'podium-bottle',
-        'Bottle ' + item.data.bottleId
+        bottleName(item.data.bottleId)
       );
       pedestal.appendChild(bottleInfo);
+
+      const detail = bottleDetail(item.data.bottleId);
+      if (detail) {
+        const detailEl = createElement('div', 'podium-score', detail);
+        pedestal.appendChild(detailEl);
+      }
 
       const score = createElement(
         'div',
@@ -400,7 +443,16 @@
       row.appendChild(rankCell);
 
       const bottleCell = document.createElement('td');
-      bottleCell.textContent = 'Bottle ' + item.bottleId;
+      const bottleMain = createElement('span', null, bottleName(item.bottleId));
+      bottleCell.appendChild(bottleMain);
+      const wine = wineRegistry[item.bottleId];
+      if (wine) {
+        bottleCell.setAttribute('title', bottleDetail(item.bottleId));
+        if (wine.broughtBy && wine.broughtBy !== '—') {
+          const broughtBy = createElement('span', 'brought-by', ' · ' + wine.broughtBy);
+          bottleCell.appendChild(broughtBy);
+        }
+      }
       row.appendChild(bottleCell);
 
       const scoreCell = document.createElement('td');
@@ -461,7 +513,7 @@
       const el = createStatItem(
         badges[idx],
         idx + 1,
-        'Bottle ' + item.bottleId,
+        bottleName(item.bottleId),
         'Variance: ' + item.variance.toFixed(1) + ' · Avg rank: ' + item.avgRank.toFixed(1),
         '±' + Math.sqrt(item.variance).toFixed(1)
       );
@@ -474,7 +526,7 @@
       const el = createStatItem(
         badges[idx],
         idx + 1,
-        'Bottle ' + item.bottleId,
+        bottleName(item.bottleId),
         'Range: ' + item.bestRank + '→' + item.worstRank + ' · Variance: ' + item.variance.toFixed(1),
         '±' + Math.sqrt(item.variance).toFixed(1)
       );
@@ -753,4 +805,49 @@
 
     renderResults(rankings);
   });
+
+  // --- Firebase: Load Rankings Button ---
+  const btnLoadFirebase = document.getElementById('btn-load-firebase');
+  const firebaseStatus = document.getElementById('firebase-status');
+
+  if (btnLoadFirebase && typeof WineDB !== 'undefined') {
+    btnLoadFirebase.addEventListener('click', function () {
+      firebaseStatus.textContent = 'Loading from Firebase...';
+      firebaseStatus.style.color = 'var(--wine-accent)';
+
+      Promise.all([
+        WineDB.getAllRankings(),
+        WineDB.getRegistry(),
+      ]).then(function (results) {
+        var rankings = results[0];
+        var registry = results[1];
+
+        // Store registry to localStorage so the results renderer can use it
+        if (registry && Object.keys(registry).length > 0) {
+          try {
+            localStorage.setItem('wine-registry', JSON.stringify(registry));
+          } catch (e) { /* ignore */ }
+        }
+
+        var names = Object.keys(rankings);
+        if (names.length === 0) {
+          firebaseStatus.textContent = 'No rankings submitted yet. Waiting for guests...';
+          firebaseStatus.style.color = 'var(--wine-rose)';
+          return;
+        }
+
+        // Convert to text format and populate textarea
+        var lines = names.map(function (name) {
+          return name + ': ' + rankings[name].join(', ');
+        });
+
+        inputTextarea.value = lines.join('\n');
+        firebaseStatus.textContent = '✓ Loaded ' + names.length + ' rankings from Firebase!';
+        firebaseStatus.style.color = 'var(--wine-green)';
+      }).catch(function (err) {
+        firebaseStatus.textContent = 'Error loading from Firebase. Check your connection.';
+        firebaseStatus.style.color = 'var(--wine-red)';
+      });
+    });
+  }
 })();

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Wine Tasting — My Rankings</title>
+  <meta name="description" content="Rank your wines during the blind tasting event.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="client.css">
+</head>
+<body>
+
+  <!-- Screen 1: Welcome -->
+  <div id="screen-welcome" class="screen active">
+    <div class="screen-inner">
+      <div class="welcome-icon">🍷</div>
+      <h1 class="welcome-title">Sauvignon Blanc<br><span class="accent">Showdown</span></h1>
+      <p class="welcome-sub">Enter your name to start ranking</p>
+      <div class="name-input-group">
+        <input type="text" id="input-name" placeholder="Your name" maxlength="30" autocomplete="off">
+        <button id="btn-join" class="btn btn-primary">Join Tasting</button>
+      </div>
+      <p id="welcome-error" class="error-text"></p>
+      <p class="welcome-hint">Your rankings are saved on this device.</p>
+    </div>
+  </div>
+
+  <!-- Screen 2: Main Ranking Interface -->
+  <div id="screen-ranking" class="screen">
+
+    <!-- Sticky Header -->
+    <header class="ranking-header">
+      <div class="header-left">
+        <span class="header-wine-icon">🍷</span>
+        <span id="header-name" class="header-name"></span>
+      </div>
+      <div class="header-right">
+        <span id="bottle-count" class="bottle-count">0 / 20</span>
+      </div>
+    </header>
+
+    <!-- Bottle Grid: Tap to add -->
+    <div class="bottle-grid-section">
+      <p class="section-label">Tap a bottle to rank it</p>
+      <div id="bottle-grid" class="bottle-grid"></div>
+    </div>
+
+    <!-- Insert Mode Banner (hidden by default) -->
+    <div id="insert-banner" class="insert-banner hidden">
+      <span id="insert-banner-text"></span>
+      <button id="btn-cancel-insert" class="btn-cancel">✕ Cancel</button>
+    </div>
+
+    <!-- Ranked List -->
+    <div class="ranked-list-section">
+      <div class="list-header">
+        <span class="list-title" id="list-title">My Rankings</span>
+        <span class="list-hint" id="list-hint">Best at top</span>
+      </div>
+      <div id="ranked-list" class="ranked-list"></div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-section">
+      <button id="btn-submit" class="btn btn-primary btn-full" disabled>Submit My Rankings</button>
+      <button id="btn-reset" class="btn btn-ghost">Start Over</button>
+    </div>
+  </div>
+
+  <!-- Screen 3: Submitted -->
+  <div id="screen-submitted" class="screen">
+    <div class="screen-inner">
+      <div class="submitted-icon">✅</div>
+      <h2 class="submitted-title">Rankings Submitted!</h2>
+      <p class="submitted-sub">Share this with your host:</p>
+      <div class="ranking-output-box">
+        <code id="ranking-output-text"></code>
+      </div>
+      <button id="btn-copy" class="btn btn-gold btn-full">📋 Copy to Clipboard</button>
+      <p id="copy-confirm" class="copy-confirm"></p>
+      <div class="submitted-actions">
+        <button id="btn-edit" class="btn btn-secondary">✏️ Edit Rankings</button>
+        <button id="btn-new" class="btn btn-ghost">New Taster</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="firebase-sync.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>

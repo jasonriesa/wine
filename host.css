@@ -1,0 +1,388 @@
+/* ============================================================
+   Wine Registration — Host Stylesheet
+   Same dark wine theme, optimized for the registration workflow
+   ============================================================ */
+
+:root {
+  --wine-deep:      #1a0a1e;
+  --wine-dark:      #2d1233;
+  --wine-mid:       #4a1942;
+  --wine-accent:    #c9a96e;
+  --wine-gold:      #e8c97a;
+  --wine-rose:      #d4657a;
+  --wine-green:     #7ecfa0;
+  --wine-red:       #e06070;
+
+  --bg-body:        #0e0612;
+  --bg-card:        rgba(45, 18, 51, 0.55);
+  --bg-input:       rgba(26, 10, 30, 0.7);
+  --border-subtle:  rgba(201, 169, 110, 0.15);
+  --border-accent:  rgba(201, 169, 110, 0.35);
+
+  --text-primary:   #f5ede0;
+  --text-secondary: #b8a890;
+  --text-muted:     #7a6b5a;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 100px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-body);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* --- Header --- */
+.page-header {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 1.5rem;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.page-sub {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+}
+
+.nav-link {
+  color: var(--wine-accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--border-accent);
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-pill);
+  transition: all 200ms;
+}
+
+.nav-link:hover {
+  background: rgba(201, 169, 110, 0.1);
+}
+
+/* --- Form Card --- */
+.form-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  animation: fadeInUp 500ms var(--ease-out) both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--wine-gold);
+  margin-bottom: 1.25rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem 1rem;
+  align-items: center;
+}
+
+@media (max-width: 500px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.6rem 0.8rem;
+  transition: border-color 200ms;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--wine-accent);
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+}
+
+.form-group input::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+/* ID selector with +/- */
+.id-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.id-selector input {
+  width: 60px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  -moz-appearance: textfield;
+}
+
+.id-selector input::-webkit-outer-spin-button,
+.id-selector input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.btn-circle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(201, 169, 110, 0.1);
+  border: 1px solid var(--border-subtle);
+  color: var(--wine-gold);
+  font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 180ms;
+  font-family: var(--font-body); line-height: 1;
+}
+
+.btn-circle:hover { background: rgba(201, 169, 110, 0.2); border-color: var(--wine-accent); }
+.btn-circle:active { transform: scale(0.92); }
+
+.form-error {
+  color: var(--wine-red);
+  font-size: 0.82rem;
+  min-height: 1.2em;
+  margin: 0.75rem 0 0;
+}
+
+/* --- Button --- */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: all 200ms var(--ease-out);
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--wine-accent), var(--wine-gold));
+  color: var(--wine-deep);
+  box-shadow: 0 4px 20px rgba(201, 169, 110, 0.3);
+}
+
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(201, 169, 110, 0.4); }
+.btn-primary:active { transform: translateY(0); }
+
+/* --- Registry Section --- */
+.registry-section {
+  margin-bottom: 3rem;
+  animation: fadeInUp 500ms var(--ease-out) 0.1s both;
+}
+
+.registry-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.registry-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.registry-count {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* --- Registry List --- */
+.registry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.registry-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  transition: background 150ms;
+}
+
+.registry-item:hover {
+  background: rgba(201, 169, 110, 0.05);
+}
+
+.registry-item.just-added {
+  animation: slideIn 400ms var(--ease-out) both;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.registry-id {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: var(--wine-gold);
+  min-width: 36px;
+  text-align: center;
+}
+
+.registry-info {
+  flex: 1;
+}
+
+.registry-wine-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.registry-wine-detail {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.registry-remove {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(224, 96, 112, 0.08);
+  border: 1px solid rgba(224, 96, 112, 0.15);
+  color: var(--wine-red);
+  font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 150ms; flex-shrink: 0;
+}
+
+.registry-remove:hover {
+  background: rgba(224, 96, 112, 0.25);
+  border-color: var(--wine-red);
+}
+
+/* --- Empty State --- */
+.registry-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--text-muted);
+}
+
+.empty-icon { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; }
+.empty-sub { font-size: 0.8rem; margin-top: 0.3rem; }
+
+/* --- Reset / Danger Zone --- */
+.reset-section {
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  border: 1px dashed rgba(224, 96, 112, 0.3);
+  border-radius: var(--radius-md);
+  background: rgba(224, 96, 112, 0.04);
+}
+
+.reset-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--wine-red);
+  margin-bottom: 0.3rem;
+}
+
+.reset-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.reset-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-danger-outline {
+  background: transparent;
+  color: var(--wine-rose);
+  border: 1px solid rgba(224, 96, 112, 0.3);
+}
+.btn-danger-outline:hover {
+  background: rgba(224, 96, 112, 0.1);
+  border-color: var(--wine-red);
+}
+
+.btn-danger {
+  background: rgba(224, 96, 112, 0.15);
+  color: var(--wine-red);
+  border: 1px solid rgba(224, 96, 112, 0.4);
+}
+.btn-danger:hover {
+  background: rgba(224, 96, 112, 0.25);
+}
+
+.reset-status {
+  font-size: 1rem;
+  margin-top: 1rem;
+  min-height: 1.4em;
+  font-weight: 700;
+  padding: 0.5rem 0;
+}

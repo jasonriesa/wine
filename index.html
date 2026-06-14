@@ -20,6 +20,11 @@
       <p class="hero-subtitle">20 bottles. 20 palates. One champion.</p>
       <div class="hero-divider"></div>
       <p class="hero-cta-text">Paste everyone's rankings below, or load sample data to explore.</p>
+      <p class="hero-cta-text" style="margin-top: 0.75rem;">
+        <a href="host.html" style="color: var(--wine-gold); text-decoration: underline; text-underline-offset: 3px;">📋 Host: Register Bottles</a>
+        &nbsp;·&nbsp;
+        <a href="client.html" style="color: var(--wine-gold); text-decoration: underline; text-underline-offset: 3px;">📱 Guest: Rank Wines</a>
+      </p>
     </div>
   </header>
 
@@ -36,9 +41,11 @@
 Bob: 12, 5, 8, 3, 19, 1, 15, 7, 20, 2, 6, 11, 9, 14, 4, 17, 16, 10, 18, 13
 ..."></textarea>
         <div class="input-actions">
+          <button id="btn-load-firebase" class="btn btn-primary">🔥 Load from Firebase</button>
           <button id="btn-load-sample" class="btn btn-secondary">Load Sample Data</button>
           <button id="btn-analyze" class="btn btn-primary">Reveal the Results 🍷</button>
         </div>
+        <div id="firebase-status" class="firebase-status"></div>
         <div id="input-error" class="input-error" role="alert"></div>
       </div>
     </div>
@@ -147,6 +154,9 @@ Bob: 12, 5, 8, 3, 19, 1, 15, 7, 20, 2, 6, 11, 9, 14, 4, 17, 16, 10, 18, 13
     </div>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="firebase-sync.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
