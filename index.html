@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sauvignon Blanc Showdown — Wine Tasting Results</title>
+  <meta name="description" content="Interactive results dashboard for blind wine tasting events. Discover rankings, taste agreements, and fun stats from your Sauvignon Blanc showdown.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Hero / Landing -->
+  <header id="hero">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-pretitle">Blind Tasting Event</p>
+      <h1 class="hero-title">Sauvignon Blanc<br><span class="accent">Showdown</span></h1>
+      <p class="hero-subtitle">20 bottles. 20 palates. One champion.</p>
+      <div class="hero-divider"></div>
+      <p class="hero-cta-text">Paste everyone's rankings below, or load sample data to explore.</p>
+    </div>
+  </header>
+
+  <!-- Input Section -->
+  <section id="input-section">
+    <div class="container">
+      <div class="input-card">
+        <h2>Submit Rankings</h2>
+        <p class="input-instructions">
+          Enter each person's ranking on a separate line. Format: <strong>Name: bottle#, bottle#, bottle#, …</strong> (best first).
+          <br>Example: <code>Alice: 5, 12, 3, 8, 1, 19, 7, 15, 2, 20, 11, 6, 14, 9, 17, 4, 10, 16, 13, 18</code>
+        </p>
+        <textarea id="rankings-input" rows="14" placeholder="Alice: 5, 12, 3, 8, 1, 19, 7, 15, 2, 20, 11, 6, 14, 9, 17, 4, 10, 16, 13, 18
+Bob: 12, 5, 8, 3, 19, 1, 15, 7, 20, 2, 6, 11, 9, 14, 4, 17, 16, 10, 18, 13
+..."></textarea>
+        <div class="input-actions">
+          <button id="btn-load-sample" class="btn btn-secondary">Load Sample Data</button>
+          <button id="btn-analyze" class="btn btn-primary">Reveal the Results 🍷</button>
+        </div>
+        <div id="input-error" class="input-error" role="alert"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Dashboard -->
+  <section id="results-section" class="hidden">
+    <div class="container">
+
+      <!-- Section: Overall Bottle Rankings -->
+      <div class="results-block" id="block-rankings">
+        <h2 class="section-title">
+          <span class="section-icon">🏆</span>
+          Overall Bottle Rankings
+        </h2>
+        <p class="section-desc">Aggregated using Borda count — lower total rank = better bottle.</p>
+        <div id="podium-area" class="podium-area"></div>
+        <div id="rankings-table-wrapper" class="table-wrapper"></div>
+      </div>
+
+      <!-- Section: Consensus & Controversy -->
+      <div class="results-block" id="block-consensus">
+        <h2 class="section-title">
+          <span class="section-icon">🎯</span>
+          Consensus vs. Controversy
+        </h2>
+        <p class="section-desc">Which bottles did everyone agree on, and which sparked debate?</p>
+        <div class="dual-panel">
+          <div class="panel panel-consensus">
+            <h3>Most Agreed Upon</h3>
+            <div id="consensus-list"></div>
+          </div>
+          <div class="panel panel-controversy">
+            <h3>Most Controversial</h3>
+            <div id="controversy-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Taste Twins & Lone Wolves -->
+      <div class="results-block" id="block-agreement">
+        <h2 class="section-title">
+          <span class="section-icon">🤝</span>
+          Taste Agreements
+        </h2>
+        <p class="section-desc">Who shares the most similar palate? Measured by Kendall's Tau rank correlation.</p>
+        <div class="dual-panel">
+          <div class="panel panel-twins">
+            <h3>🫂 Taste Twins</h3>
+            <p class="panel-sub">Highest average agreement with the group</p>
+            <div id="twins-list"></div>
+          </div>
+          <div class="panel panel-wolves">
+            <h3>🐺 Lone Wolves</h3>
+            <p class="panel-sub">Lowest average agreement — the contrarians</p>
+            <div id="wolves-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Best Pair -->
+      <div class="results-block" id="block-pairs">
+        <h2 class="section-title">
+          <span class="section-icon">💕</span>
+          Perfect Pairs
+        </h2>
+        <p class="section-desc">The pairs of people with the most (and least) aligned taste.</p>
+        <div class="dual-panel">
+          <div class="panel panel-best-pair">
+            <h3>Best Match</h3>
+            <div id="best-pair"></div>
+          </div>
+          <div class="panel panel-worst-pair">
+            <h3>Biggest Rivals</h3>
+            <div id="worst-pair"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Full Agreement Matrix -->
+      <div class="results-block" id="block-matrix">
+        <h2 class="section-title">
+          <span class="section-icon">📊</span>
+          Agreement Matrix
+        </h2>
+        <p class="section-desc">Pairwise Kendall's Tau correlations between all tasters.</p>
+        <div id="matrix-wrapper" class="table-wrapper matrix-wrapper"></div>
+      </div>
+
+      <!-- Section: Individual Stats -->
+      <div class="results-block" id="block-individual">
+        <h2 class="section-title">
+          <span class="section-icon">👤</span>
+          Individual Scorecards
+        </h2>
+        <p class="section-desc">See how each person's taste compares to the crowd.</p>
+        <div id="individual-cards" class="individual-cards-grid"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer id="footer" class="hidden">
+    <div class="container">
+      <p>Sauvignon Blanc Showdown — crafted with 🍷 and data</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
