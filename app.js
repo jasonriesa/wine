@@ -30,14 +30,15 @@
     return 'Bottle ' + id;
   }
 
-  /** Returns full detail line, e.g. "Honig, 2023 · Napa Valley · Brought by Alice" */
+  /** Returns full detail line, e.g. "Honig, 2023 · Napa Valley · Alice · $22" */
   function bottleDetail(id) {
     const wine = wineRegistry[id];
     if (wine) {
       let parts = [wine.winery];
       if (wine.year && wine.year !== '—') parts.push(wine.year);
       if (wine.region && wine.region !== '—') parts.push(wine.region);
-      if (wine.broughtBy && wine.broughtBy !== '—') parts.push('Brought by ' + wine.broughtBy);
+      if (wine.broughtBy && wine.broughtBy !== '—') parts.push(wine.broughtBy);
+      if (wine.price && wine.price !== '—') parts.push('$' + wine.price);
       return parts.join(' · ');
     }
     return '';

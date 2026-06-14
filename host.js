@@ -21,6 +21,7 @@
   var inputYear = document.getElementById('input-year');
   var inputRegion = document.getElementById('input-region');
   var inputBroughtBy = document.getElementById('input-brought-by');
+  var inputPrice = document.getElementById('input-price');
   var formError = document.getElementById('form-error');
   var btnRegister = document.getElementById('btn-register');
   var registryList = document.getElementById('registry-list');
@@ -89,7 +90,7 @@
     btnRegister.addEventListener('click', handleRegister);
 
     // Enter key in any field triggers register
-    [inputWinery, inputYear, inputRegion, inputBroughtBy].forEach(function (inp) {
+    [inputWinery, inputYear, inputRegion, inputBroughtBy, inputPrice].forEach(function (inp) {
       inp.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') handleRegister();
       });
@@ -104,6 +105,7 @@
     var year = inputYear.value.trim();
     var region = inputRegion.value.trim();
     var broughtBy = inputBroughtBy.value.trim();
+    var price = inputPrice.value.trim();
 
     if (isNaN(id) || id < 1) {
       formError.textContent = 'Please enter a valid bottle ID.';
@@ -125,6 +127,7 @@
       year: year || '—',
       region: region || '—',
       broughtBy: broughtBy || '—',
+      price: price || '—',
     };
 
     save();
@@ -134,6 +137,7 @@
     inputYear.value = '';
     inputRegion.value = '';
     inputBroughtBy.value = '';
+    inputPrice.value = '';
 
     renderList(true, id);
     advanceToNextFreeId();
@@ -190,9 +194,10 @@
       // Info
       var info = el('div', 'registry-info');
       var name = el('div', 'registry-wine-name', wine.winery);
-      var brought = wine.broughtBy && wine.broughtBy !== '—' ? ' · Brought by ' + wine.broughtBy : '';
+      var brought = wine.broughtBy && wine.broughtBy !== '—' ? ' · ' + wine.broughtBy : '';
+      var priceStr = wine.price && wine.price !== '—' ? ' · $' + wine.price : '';
       var detail = el('div', 'registry-wine-detail',
-        wine.year + ' · ' + wine.region + brought);
+        wine.year + ' · ' + wine.region + brought + priceStr);
       info.appendChild(name);
       info.appendChild(detail);
       item.appendChild(info);
